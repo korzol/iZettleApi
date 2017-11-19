@@ -7,6 +7,11 @@ namespace LauLamanApps\IzettleApi;
 use LauLamanApps\IzettleApi\Client\Finance\AccountTransactionBuilder;
 use LauLamanApps\IzettleApi\Client\Finance\PayoutInfoBuilder;
 use LauLamanApps\IzettleApi\Client\FinanceClient;
+use LauLamanApps\IzettleApi\Client\Inventory\LocationBuilder;
+use LauLamanApps\IzettleApi\Client\Inventory\ProductBuilder as InventoryProductBuilder;
+use LauLamanApps\IzettleApi\Client\Inventory\HistoryBuilder as InventoryHistoryBuilder;
+use LauLamanApps\IzettleApi\Client\Inventory\SettingsBuilder;
+use LauLamanApps\IzettleApi\Client\InventoryClient;
 use LauLamanApps\IzettleApi\Client\ImageClient;
 use LauLamanApps\IzettleApi\Client\Product\CategoryBuilder;
 use LauLamanApps\IzettleApi\Client\Product\DiscountBuilder;
@@ -74,5 +79,17 @@ final class IzettleClientFactory
     public static function getImageClient(IzettleClientInterface $client, ?UuidInterface $organizationUuid = null): ImageClient
     {
         return new ImageClient($client, $organizationUuid, new ImageBuilder());
+    }
+
+    public static function getInventoryClient(IzettleClientInterface $client, ?UuidInterface $organizationUuid = null): InventoryClient
+    {
+        return new InventoryClient(
+            $client,
+            $organizationUuid,
+            new LocationBuilder(),
+            new InventoryProductBuilder(),
+            new InventoryHistoryBuilder(),
+            new SettingsBuilder()
+        );
     }
 }
